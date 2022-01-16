@@ -5,7 +5,7 @@ In the case of Golang, we have a concurrency scheme. What is it? Will it be effi
 Concurrency and parallelism are not the same thing, but what can we have as a result of this?
 If we build a sorting program by concurrency scheme, what effect can we expect?
 
-##This experiment explores the following algorithms:
+## This experiment explores the following algorithms:
 
 1) sort.Ints() - standard sorting of integers.
 

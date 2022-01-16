@@ -1,5 +1,7 @@
 # Comparison of sorting algorithms in Golang
 
+![dot.png](gopher.png)
+
 When we have any computer tool, we want to know how fast it is. This is a normal life situation.
 In the case of Golang, we have a concurrency scheme. What is it? Will it be efficient, for example, to sort digits?
 Concurrency and parallelism are not the same thing, but what can we have as a result of this?
@@ -19,3 +21,7 @@ Here we should then try to run this algorithm on a large data array, perhaps the
 
 * Parallel schema #1, #2 - is the use of various Go approaches to synchronize calls of classic QuickSort() on chunks of the original array. 
 Synchronization approaches were used, which could be googled on the Internet in about 10 minutes of searching.
+
+## Results
+
+![dot.png](example3.png)

@@ -29,6 +29,7 @@ import (
     "github.com/shawnsmithdev/zermelo"
     "github.com/shirou/gopsutil/cpu"
     "github.com/shirou/gopsutil/mem"
+    "github.com/pkg/profile"
 )
 
 type MyOut struct {
@@ -90,6 +91,10 @@ func simplest_check_arr(arr []int) int64 {
 func main() {
 
     // runtime.GOMAXPROCS(2)
+
+    defer profile.Start().Stop()
+
+    RESULT := "result.xml"
 
     X := []int{1_000, 5_000, 10_000, 30_000, 50_000, 100_000} // , 1_000_000, 10_000_000}
 
@@ -401,8 +406,7 @@ func main() {
         fmt.Println(err)
     }
     
-    fmt.Println(string(b))
-
+    _ = ioutil.WriteFile(RESULT, b, 0644)
 
     /*
 {        

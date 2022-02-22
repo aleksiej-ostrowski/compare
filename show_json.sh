@@ -1,1 +1,1 @@
-cat example3.xml | python -mjson.tool
+cat example3.xml | python3 -mjson.tool

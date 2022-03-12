@@ -87,6 +87,28 @@ func simplest_check_arr(arr []int) int64 {
     return hash
 }
 
+func prepare_chunks(a []int, N_CHUNKS int) chan *[]int {
+
+    divided := make(chan *[]int, N_CHUNKS)
+
+    b := make([]int, len(a))
+    copy(b, a)
+
+    chunkSize := (len(b) + N_CHUNKS - 1) / N_CHUNKS
+
+    for i := 0; i < len(b); i += chunkSize {
+        end := i + chunkSize
+
+        if end > len(b) {
+            end = len(b)
+        }
+
+        chunk := b[i : end]
+        divided <- &chunk
+    }
+
+    return divided
+}
 
 
 func main() {
@@ -99,7 +121,7 @@ func main() {
 
     N_CHUNKS := runtime.NumCPU()
 
-    X := []int{1_000, 5_000, 10_000, 30_000, 50_000, 100_000, 1_000_000} //, 10_000_000}
+    X := []int{1_000, 5_000, 10_000, 30_000, 50_000, 100_000, 1_000_000, 10_000_000}
 
     MET := []string{"sort.Ints()", "RadixSort()", "QuickSort()", "QuickSort_parallel()", "Parallel schema #1", "Parallel schema #2"}
 
@@ -221,31 +243,7 @@ func main() {
 
             }
 
-
-            // preparing chunks
-
-            divided := make(chan *[]int, N_CHUNKS)
-
-            {
-
-            b := make([]int, len(a))
-            copy(b, a)
-
-            chunkSize := (len(b) + N_CHUNKS - 1) / N_CHUNKS
-
-            for i := 0; i < len(b); i += chunkSize {
-                end := i + chunkSize
-
-                if end > len(b) {
-                    end = len(b)
-                }
-
-                chunk := b[i : end]
-                divided <- &chunk
-            }
-
-            }
-
+            divided := prepare_chunks(a, N_CHUNKS)
 
             // 4 
 
@@ -299,33 +297,9 @@ func main() {
 
             }
 
-
-            // preparing chunks
-
-            divided = make(chan *[]int, N_CHUNKS)
-
-            {
-
-            b := make([]int, len(a))
-            copy(b, a)
-
-            chunkSize := (len(b) + N_CHUNKS - 1) / N_CHUNKS
-
-            for i := 0; i < len(b); i += chunkSize {
-                end := i + chunkSize
-
-                if end > len(b) {
-                    end = len(b)
-                }
-
-                chunk := b[i : end]
-                divided <- &chunk
-            }
-
-            }
-
-
             // 5
+
+            divided = prepare_chunks(a, N_CHUNKS)
 
             {
 

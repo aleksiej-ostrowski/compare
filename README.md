@@ -24,4 +24,4 @@ Synchronization approaches were used, which could be googled on the Internet in 
 
 ## Results
 
-![dot.png](example3.png)
+![dot.png](example4.png)

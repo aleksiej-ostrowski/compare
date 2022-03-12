@@ -29,7 +29,8 @@ import (
     "github.com/shawnsmithdev/zermelo"
     "github.com/shirou/gopsutil/cpu"
     "github.com/shirou/gopsutil/mem"
-    "github.com/pkg/profile"
+    // "github.com/pkg/profile"
+    "io/ioutil"
 )
 
 type MyOut struct {
@@ -92,11 +93,13 @@ func main() {
 
     // runtime.GOMAXPROCS(2)
 
-    defer profile.Start().Stop()
+    // defer profile.Start().Stop()
 
-    RESULT := "result.xml"
+    RESULT := "./result.xml"
 
-    X := []int{1_000, 5_000, 10_000, 30_000, 50_000, 100_000} // , 1_000_000, 10_000_000}
+    N_CHUNKS := runtime.NumCPU()
+
+    X := []int{1_000, 5_000, 10_000, 30_000, 50_000, 100_000, 1_000_000} //, 10_000_000}
 
     MET := []string{"sort.Ints()", "RadixSort()", "QuickSort()", "QuickSort_parallel()", "Parallel schema #1", "Parallel schema #2"}
 
@@ -221,14 +224,14 @@ func main() {
 
             // preparing chunks
 
-            divided := [][]int{}
+            divided := make(chan *[]int, N_CHUNKS)
 
             {
 
             b := make([]int, len(a))
             copy(b, a)
 
-            chunkSize := (len(b) + runtime.NumCPU() - 1) / runtime.NumCPU()
+            chunkSize := (len(b) + N_CHUNKS - 1) / N_CHUNKS
 
             for i := 0; i < len(b); i += chunkSize {
                 end := i + chunkSize
@@ -237,17 +240,16 @@ func main() {
                     end = len(b)
                 }
 
-                divided = append(divided, b[i : end])
+                chunk := b[i : end]
+                divided <- &chunk
             }
 
             }
+
 
             // 4 
 
             {
-
-            b := make([][]int, len(divided))
-            copy(b, divided)
 
             start := time.Now()
 
@@ -257,13 +259,13 @@ func main() {
 
             var wg sync.WaitGroup
 
-            for _, v := range b {
+            for i := 0; i < N_CHUNKS; i++ {
                 wg.Add(1)
-                go func(x []int) {
+                go func(x *[]int) {
                     defer wg.Done()
-                    q.QuickSort(&x)
-                    ch <- &x
-                }(v)
+                    q.QuickSort(x)
+                    ch <- x
+                }(<- divided)
             }
 
             go func() {
@@ -297,21 +299,41 @@ func main() {
 
             }
 
-            // 5
+
+            // preparing chunks
+
+            divided = make(chan *[]int, N_CHUNKS)
 
             {
 
-            b := make([][]int, len(divided))
+            b := make([]int, len(a))
+            copy(b, a)
 
-            copy(b, divided)
+            chunkSize := (len(b) + N_CHUNKS - 1) / N_CHUNKS
+
+            for i := 0; i < len(b); i += chunkSize {
+                end := i + chunkSize
+
+                if end > len(b) {
+                    end = len(b)
+                }
+
+                chunk := b[i : end]
+                divided <- &chunk
+            }
+
+            }
+
+
+            // 5
+
+            {
 
             start := time.Now()
 
             pq := priority_queue.New()
 
             ch := make(chan *[]int)
-
-            len_divided := len(b)
 
             /*
 
@@ -335,15 +357,14 @@ func main() {
 
             */
 
-            for _, v := range b {
-                go func(x []int) {
-                    q.QuickSort(&x)
-                    ch <- &x
-                }(v)
+            for i := 0; i < N_CHUNKS; i++ {
+                go func(x *[]int) {
+                    q.QuickSort(x)
+                    ch <- x
+                }(<- divided)
             }
 
-
-            for i := 0; i < len_divided; i++ {
+            for i := 0; i < N_CHUNKS; i++ {
                 for _, v := range *<-ch {
                     pq.Push(&Node{priority: v, value: v})
                 }

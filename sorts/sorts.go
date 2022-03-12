@@ -9,6 +9,7 @@ import (
     // "time"
 	// "runtime"
 	// "unsafe"
+    // "github.com/pkg/profile"
 )
 
 func partition(arr *[]int, low, high int) int {
@@ -76,6 +77,8 @@ func partition_parallel(arr *[]int, low int, high int, paar chan TASwap) int {
 
 func QuickSort_parallel(arr *[]int) {
 
+    // defer profile.Start().Stop()
+
 	c := make(chan struct{})
     go quickSort_parallel(arr, 0, len(*arr) - 1, c)
     <- c
@@ -83,6 +86,7 @@ func QuickSort_parallel(arr *[]int) {
 
 
 func quickSort_parallel(arr *[]int, low int, high int, ch chan struct{}) {
+
 	if low < high {
 
         paar := make(chan TASwap, (high - low) + 1)

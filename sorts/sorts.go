@@ -4,7 +4,7 @@ package qsort
 
 import (
     // "math/rand"
-    // "sync"
+    "sync"
     // "fmt"
     // "time"
 	// "runtime"
@@ -40,6 +40,7 @@ func quickSort(arr *[]int, low, high int) {
 }
 
 
+/*
 
 type TASwap struct {
 	a1 int
@@ -108,6 +109,75 @@ func quickSort_parallel(arr *[]int, low int, high int, ch chan struct{}) {
 	ch <- struct{}{}
 }
 
+*/
+
+
+// https://gist.github.com/teivah/ac6cedf004c1e550575f561288c3629f
+
+func merge(s []int, middle int) {
+	helper := make([]int, len(s))
+	copy(helper, s)
+
+	helperLeft := 0
+	helperRight := middle
+	current := 0
+	high := len(s) - 1
+
+	for helperLeft <= middle-1 && helperRight <= high {
+		if helper[helperLeft] <= helper[helperRight] {
+			s[current] = helper[helperLeft]
+			helperLeft++
+		} else {
+			s[current] = helper[helperRight]
+			helperRight++
+		}
+		current++
+	}
+
+	for helperLeft <= middle-1 {
+		s[current] = helper[helperLeft]
+		current++
+		helperLeft++
+	}
+}
+
+
+// https://gist.github.com/teivah/4693d49278868e1585feca4e1dc0a680
+func mergesort(s []int) {
+	if len(s) > 1 {
+		middle := len(s) / 2
+		mergesort(s[:middle])
+		mergesort(s[middle:])
+		merge(s, middle)
+	}
+}
+
+
+// https://gist.github.com/teivah/5f14092182cae9886bafdd5537f97a7b
+func Mergesortv3(s []int) {
+	len := len(s)
+
+	if len > 1 {
+		if len <= 10_000 { // Sequential
+			mergesort(s)
+		} else { // Parallel
+			middle := len / 2
+
+			var wg sync.WaitGroup
+			wg.Add(1)
+
+			go func() {
+				defer wg.Done()
+				Mergesortv3(s[:middle])
+			}()
+
+			Mergesortv3(s[middle:])
+
+			wg.Wait()
+			merge(s, middle)
+		}
+	}
+}
 
 
 /*

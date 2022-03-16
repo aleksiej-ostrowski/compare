@@ -2,7 +2,7 @@
 
 #--------------------------------#
 #                                #
-#  version 0.0.1                 #
+#  version 0.0.2                 #
 #                                #
 #  Aleksiej Ostrowski, 2022      #
 #                                #
@@ -19,13 +19,13 @@ import (
     "math"
     "math/rand"
     "time"
-    "sync"
+    // "sync"
     "runtime"
     "sort"
     // "strings"
     "encoding/json"
     q "./sorts"
-    "./priority_queue"
+    // "./priority_queue"
     "github.com/shawnsmithdev/zermelo"
     "github.com/shirou/gopsutil/cpu"
     "github.com/shirou/gopsutil/mem"
@@ -43,6 +43,8 @@ type MyOut struct {
     Title string 
 }
 
+/*
+
 type Node struct {
     priority int
     value    int
@@ -51,6 +53,8 @@ type Node struct {
 func (this *Node) Less(other interface{}) bool {
     return this.priority < other.(*Node).priority
 }
+
+*/
 
 /*
 
@@ -87,6 +91,8 @@ func simplest_check_arr(arr []int) int64 {
     return hash
 }
 
+/*
+
 func prepare_chunks(a []int, N_CHUNKS int) chan *[]int {
 
     divided := make(chan *[]int, N_CHUNKS)
@@ -110,6 +116,7 @@ func prepare_chunks(a []int, N_CHUNKS int) chan *[]int {
     return divided
 }
 
+*/
 
 func main() {
 
@@ -119,11 +126,11 @@ func main() {
 
     RESULT := "./result.xml"
 
-    N_CHUNKS := runtime.NumCPU()
+    // N_CHUNKS := runtime.NumCPU()
 
-    X := []int{1_000, 5_000, 10_000, 30_000, 50_000, 100_000, 1_000_000, 10_000_000}
+    X := []int{1_000, 5_000, 10_000, 30_000, 50_000, 100_000, 1_000_000, 10_000_000, 100_000_000}
 
-    MET := []string{"sort.Ints()", "RadixSort()", "QuickSort()", "QuickSort_parallel()", "Parallel schema #1", "Parallel schema #2"}
+    MET := []string{"sort.Ints()", "RadixSort()", "QuickSort()", "QuickSort_parallel()"} // "Parallel schema #1", "Parallel schema #2"}
 
     DATA := make([][]time.Duration, len(MET))
 
@@ -142,8 +149,6 @@ func main() {
         for i, _ := range TIMES {
             TIMES[i] = time.Duration(0)
         }
-
-        // fmt.Println("for ", Xi + 1, " of ", len(X), "run...")
 
         for j := 0; j < ITER; j++ {
 
@@ -229,7 +234,7 @@ func main() {
 
             start := time.Now()
 
-            q.QuickSort_parallel(&b)
+            q.Mergesortv3(b)
 
             duration := time.Since(start)
 
@@ -243,7 +248,9 @@ func main() {
 
             }
 
-            divided := prepare_chunks(a, N_CHUNKS)
+            // divided := prepare_chunks(a, N_CHUNKS)
+
+            /*
 
             // 4 
 
@@ -309,27 +316,19 @@ func main() {
 
             ch := make(chan *[]int)
 
-            /*
+            //for _, v := range b {
+            //    go func(x []int, r chan<- *[]int) {
+            //        q.QuickSort(&x)
+            //        r <- &x
+            //    }(v, ch)
+            //}
 
-            for _, v := range b {
-                go func(x []int, r chan<- *[]int) {
-                    q.QuickSort(&x)
-                    r <- &x
-                }(v, ch)
-            }
-
-            */
-
-            /*
-
-            for i := 0; i < len_divided; i++ {
-                go func(x *[]int) {
-                    q.QuickSort(x)
-                    ch <- x
-                }(&b[i])
-            }
-
-            */
+            // for i := 0; i < len_divided; i++ {
+            //    go func(x *[]int) {
+            //        q.QuickSort(x)
+            //        ch <- x
+            //    }(&b[i])
+            // }
 
             for i := 0; i < N_CHUNKS; i++ {
                 go func(x *[]int) {
@@ -363,6 +362,8 @@ func main() {
             }
 
             }
+
+            */
         }
 
         for i, _ := range TIMES {
@@ -387,7 +388,7 @@ func main() {
         Labels: MET,
         X: X,
         Xlabel: "N",
-        Xfilter: "(x > 10_000) and not((x < 60_000) and (y < 5.))",
+        Xfilter: "( x > 1_000_000)", // "(x > 10_000) and not((x < 60_000) and (y < 5.))",
         Ylabel: "Time",
         Title:  "Algorithm's compare, " + info,
 
@@ -402,25 +403,6 @@ func main() {
     }
     
     _ = ioutil.WriteFile(RESULT, b, 0644)
-
-    /*
-{        
-"Data":  [        
-        [200, 1000, 10, 2100, 2501, 3501],        
-        [505, 5010, 50, 5200, 5502, 5502],        
-        [210, 1020, 30, 2300, 2503, 3503],        
-        [220, 1030, 40, 2400, 2504, 3504],        
-        [225, 1040, 50, 2500, 2505, 3505]        
-        ],        
-"Labels": ["1", "2", "3", "4", "5"],        
-"X": [10000, 100000, 500000, 1000000, 5000000, 10000000],        
-"Xlabel": "N",        
-"Xfilter": "x > 10_000",
-"Ylabel": "Time, sec.",        
-"Title": "Algorithm's compare"        
-} 
-
-    */
 
     n := runtime.NumGoroutine()
 

@@ -119,6 +119,7 @@ for i, e in enumerate(p.Data):
         marker=markers[i],
         label=p.Labels[i],
         color=colors[i],
+        linewidth=4
     )
 
     for_filter = zip(p.X, e)

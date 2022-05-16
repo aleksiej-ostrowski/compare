@@ -2,7 +2,7 @@
 
 #--------------------------------#
 #                                #
-#  version 0.0.2                 #
+#  version 0.0.3                 #
 #                                #
 #  Aleksiej Ostrowski, 2022      #
 #                                #
@@ -31,6 +31,7 @@ import (
     "github.com/shirou/gopsutil/mem"
     // "github.com/pkg/profile"
     "io/ioutil"
+    "github.com/psilva261/timsort/v2"
 )
 
 type MyOut struct {
@@ -130,7 +131,7 @@ func main() {
 
     X := []int{1_000, 5_000, 10_000, 30_000, 50_000, 100_000, 1_000_000, 10_000_000, 100_000_000}
 
-    MET := []string{"sort.Ints()", "RadixSort()", "QuickSort()", "QuickSort_parallel()"} // "Parallel schema #1", "Parallel schema #2"}
+    MET := []string{"sort.Ints()", "RadixSort()", "QuickSort()", "QuickSort_parallel()", "TimSort()"} // "Parallel schema #1", "Parallel schema #2"}
 
     DATA := make([][]time.Duration, len(MET))
 
@@ -248,7 +249,30 @@ func main() {
 
             }
 
-            // divided := prepare_chunks(a, N_CHUNKS)
+            // 4
+
+            {
+
+            b := make([]int, len(a))
+            copy(b, a)
+
+            start := time.Now()
+
+            timsort.TimSort(sort.IntSlice(b))
+
+            duration := time.Since(start)
+
+            TIMES[4] += duration
+
+            new_hash := simplest_check_arr(b)
+
+            if (ideal_hash != new_hash) {
+                panic(fmt.Sprintf("%s does not work", MET[4]))
+            }
+
+            }
+
+           // divided := prepare_chunks(a, N_CHUNKS)
 
             /*
 

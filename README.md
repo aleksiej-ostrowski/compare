@@ -18,6 +18,8 @@ understand how fast you can "sort" integers.
 
 * QuickSort_parallel() - implementation of a modified quicksort algorithm, where goroutines are naturally embedded where there is a recurrent call of the computational function. 
 
+* TimSort() - implementation of Tim Peters's mergesort sorting algorithm.
+
 <!---
 
 Here we should then try to run this algorithm on a large data array, perhaps then the number of goroutines will become very large, this will be reflected in the time graph.

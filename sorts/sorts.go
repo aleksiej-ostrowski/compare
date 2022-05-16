@@ -12,6 +12,12 @@ import (
     // "github.com/pkg/profile"
 )
 
+
+func LessThanInt(a, b int) bool {    
+    return a < b    
+}
+
+
 func partition(arr *[]int, low, high int) int {
 	pivot := (*arr)[high]
 	i := low

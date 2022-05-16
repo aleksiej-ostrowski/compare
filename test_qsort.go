@@ -258,7 +258,9 @@ func main() {
 
             start := time.Now()
 
-            timsort.TimSort(sort.IntSlice(b))
+            // timsort.TimSort(sort.IntSlice(b))
+
+            timsort.Ints(b, q.LessThanInt)
 
             duration := time.Since(start)
 

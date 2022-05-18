@@ -32,20 +32,20 @@ import (
     // "github.com/pkg/profile"
     "io/ioutil"
     "github.com/psilva261/timsort/v2"
-    "io"    
-    "os"    
-    "encoding/binary"    
+    "io"
+    "os"
+    "encoding/binary"
     "bufio"
 )
- 
+
 type MyOut struct {
     Data [][]time.Duration
     Labels []string
     X []int
     Xlabel string
     Xfilter string
-    Ylabel string 
-    Title string 
+    Ylabel string
+    Title string
 }
 
 /*
@@ -123,55 +123,55 @@ func prepare_chunks(a []int, N_CHUNKS int) chan *[]int {
 
 */
 
-    
-func read_natural_data(size int) []int {    
-    
-    big_file := "very_big_file.bin"     
-    
-    if _, e := os.Stat(big_file); os.IsNotExist(e) {    
-        errorString := fmt.Sprintf("You must create a very large natural data file %s in the current directory.", big_file)       
-        panic(errorString)    
-    }    
-           
-    f, err := os.Open(big_file)    
-    if err != nil {    
-        panic(err)    
-    }    
 
-    defer f.Close()    
-    
-    data := make([]byte, 2)    
+func read_natural_data(size int) []int {
+
+    big_file := "very_big_file.bin"
+
+    if _, e := os.Stat(big_file); os.IsNotExist(e) {
+        errorString := fmt.Sprintf("You must create a very large natural data file %s in the current directory.", big_file)
+        panic(errorString)
+    }
+
+    f, err := os.Open(big_file)
+    if err != nil {
+        panic(err)
+    }
+
+    defer f.Close()
+
+    data := make([]byte, 2)
 
     res := make([]int, size)
-    
-    f.Seek(int64(rand.Intn(100_000)), os.SEEK_SET)    
+
+    f.Seek(int64(rand.Intn(100_000)), os.SEEK_SET)
 
     reader := bufio.NewReader(f)
-   
-    i := 0
-    for {    
 
-        n, err := reader.Read(data)    
-        if err != nil {    
-            if err == io.EOF {    
-                break    
-            }    
-            panic(err)    
+    i := 0
+    for {
+
+        n, err := reader.Read(data)
+        if err != nil {
+            if err == io.EOF {
+                break
+            }
+            panic(err)
         }
 
         if n == 0 {
             break
-        }        
+        }
 
         res[i] = int(binary.BigEndian.Uint16(data))
         i++
         if (i >= size) {
             break
         }
-    }  
+    }
 
     return res
-}    
+}
 
 func main() {
 
@@ -181,7 +181,7 @@ func main() {
 
     RESULT := "./result.xml"
 
-    NATURAL_DATA := true
+    NATURAL_DATA := false
 
     // N_CHUNKS := runtime.NumCPU()
 
@@ -338,7 +338,7 @@ func main() {
 
             /*
 
-            // 4 
+            // 4
 
             {
 
@@ -487,7 +487,7 @@ func main() {
     if err != nil {
         fmt.Println(err)
     }
-    
+
     _ = ioutil.WriteFile(RESULT, b, 0644)
 
     n := runtime.NumGoroutine()

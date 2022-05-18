@@ -1,0 +1,45 @@
+{
+    "Data": [
+        [
+            145041,
+            899671,
+            1908300
+        ],
+        [
+            22302,
+            82367,
+            146777
+        ],
+        [
+            75446,
+            465394,
+            965871
+        ],
+        [
+            190012,
+            1131143,
+            1936524
+        ],
+        [
+            146294,
+            964395,
+            1986075
+        ]
+    ],
+    "Labels": [
+        "sort.Ints()",
+        "RadixSort()",
+        "QuickSort()",
+        "QuickSort_parallel()",
+        "TimSort()"
+    ],
+    "X": [
+        1000,
+        5000,
+        10000
+    ],
+    "Xlabel": "N",
+    "Xfilter": "( x > 0)",
+    "Ylabel": "Time",
+    "Title": "Algorithm's compare, Intel(R) Core(TM) i7-3630QM CPU @ 2.40GHz, logical CPUs: 8, 30 GB RAM"
+}

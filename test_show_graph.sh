@@ -1,2 +1,1 @@
-# python3 show_graph.py < example1.xml
-python3 show_graph.py < result.xml
+python3 show_graph.py < 10.xml

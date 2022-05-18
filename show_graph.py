@@ -141,7 +141,7 @@ for i, e in enumerate(p.Data):
         b_fmt = humanize.scientific(b, precision=1)
         """
         b_fmt = str(round(b, 1))
-        plt.text(a, b + 2.0, b_fmt, color=adjust_lightness(colors[i]))
+        plt.text(a, b + 0.02, b_fmt, color=adjust_lightness(colors[i]))
 
 plt.grid(axis="x")  # , alpha = 0.15)
 plt.grid(axis="y")  # , alpha = 0.15)

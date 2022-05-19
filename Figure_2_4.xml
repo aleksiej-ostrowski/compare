@@ -51,7 +51,7 @@
         50000
     ],
     "Xlabel": "N",
-    "Xfilter": "( x > 25_000)",
+    "Xfilter": "((1_000 < x < 9_000) and ( (0.001 < y < 0.8) or (1.09 < y < 2.1) ) ) or ((9_500 < x < 20_000) and ( (0.001 < y < 1.90) or (1.95 < y) ) ) or (x > 20_000) ",
     "Ylabel": "Time",
     "Title": "Algorithm's compare, Intel(R) Core(TM) i7-3630QM CPU @ 2.40GHz, logical CPUs: 8, 30 GB RAM"
 }

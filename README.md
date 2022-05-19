@@ -68,6 +68,7 @@ In this particular case, the data is a sequence of integers as a result of the c
 ![Figure_2_5.png](Figure_2_5.png)
 
 * For sorting problems up to a vector length of 10000, **QuickSort()** is the best choice among exchange algorithms.
+* Up to length 9000, the cost of the algorithm for organizing the parallelization procedure is higher than the gain in time as a result of the parallelization itself.
 
 ## What is the general conclusion?
 

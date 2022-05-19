@@ -75,7 +75,7 @@
         100000000
     ],
     "Xlabel": "N",
-    "Xfilter": "( x > 10_000_000)",
+    "Xfilter": "(y > 2000)",
     "Ylabel": "Time",
     "Title": "Algorithm's compare, Intel(R) Core(TM) i7-3630QM CPU @ 2.40GHz, logical CPUs: 8, 30 GB RAM"
 }

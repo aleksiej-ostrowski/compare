@@ -57,7 +57,10 @@ colors = [
 markers = ["o", "v", "^", "<", ">", "s", "p", "P", "*", "h", "X", "D"]
 linestyles = ["solid", "dotted", "dashed", "dashdot"]
 
-random.seed(time.time())
+init = time.time()
+init = 105
+
+random.seed(init)
 
 data = sys.stdin.read()
 
@@ -101,9 +104,14 @@ n_len = float(len_data) / len(linestyles)
 if n_len > 1.0:
     linestyles *= math.ceil(n_len)
 
+del_int = 2
 random.shuffle(colors)
+# del(colors[del_int])
+print("colors = ", colors)
 random.shuffle(markers)
+print("markers = ", markers)
 random.shuffle(linestyles)
+print("linestyles = ", linestyles)
 
 # ns -> ms
 for i, r in enumerate(p.Data):
@@ -141,7 +149,7 @@ for i, e in enumerate(p.Data):
         b_fmt = humanize.scientific(b, precision=1)
         """
         b_fmt = str(round(b, 1))
-        plt.text(a, b + 0.02, b_fmt, color=adjust_lightness(colors[i]))
+        plt.text(a, b + 0.01, b_fmt, color=adjust_lightness(colors[i]))
 
 plt.grid(axis="x")  # , alpha = 0.15)
 plt.grid(axis="y")  # , alpha = 0.15)

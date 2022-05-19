@@ -129,7 +129,7 @@ func read_natural_data(size int) []int {
     big_file := "very_big_file.bin"
 
     if _, e := os.Stat(big_file); os.IsNotExist(e) {
-        errorString := fmt.Sprintf("You must create a very large natural data file %s in the current directory.", big_file)
+        errorString := fmt.Sprintf("You must create a binary large file %s with natural data in the current directory. Size > 250M.", big_file)
         panic(errorString)
     }
 

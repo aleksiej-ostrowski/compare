@@ -1,1 +1,1 @@
-python3 show_graph.py < 10.xml
+python3 show_graph.py < Figure_2_5.xml

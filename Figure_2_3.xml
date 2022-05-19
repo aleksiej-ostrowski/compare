@@ -63,7 +63,7 @@
         1000000
     ],
     "Xlabel": "N",
-    "Xfilter": "( x > 900_000)",
+    "Xfilter": "(5.0 < y < 6.8) or (9.4 < y < 9.5) or (10 < y < 18) or (y > 20) or (x > 100_000)",
     "Ylabel": "Time",
     "Title": "Algorithm's compare, Intel(R) Core(TM) i7-3630QM CPU @ 2.40GHz, logical CPUs: 8, 30 GB RAM"
 }

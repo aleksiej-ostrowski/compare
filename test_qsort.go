@@ -181,7 +181,7 @@ func main() {
 
     RESULT := "./result.xml"
 
-    NATURAL_DATA := false
+    NATURAL_DATA := true
 
     // N_CHUNKS := runtime.NumCPU()
 

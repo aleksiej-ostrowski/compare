@@ -46,8 +46,13 @@ The main feature of natural data is the empirical fact that the data is not extr
 In this particular case, the data is a sequence of integers as a result of the compact storage of the video data stream. 
 
 * You can see, that the results are very strongly dependent on the length of the vectors.
+This result looks like an error.
 
 ![Figure_2_1.png](Figure_2_1.png)
+
+To check, sorting was launched with another array, where there were more repeating fragments that, in fact, did not need to be sorted.
+
+![Figure_3.png](Figure_3.png)
 
 * The big surprise for me was the empirical fact that **QuickSort()** turned out to be far from fast.
 

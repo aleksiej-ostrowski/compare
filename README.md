@@ -50,7 +50,7 @@ This result looks like an error.
 
 ![Figure_2_1.png](Figure_2_1.png)
 
-To check, sorting was launched with another array, where there were more repeating fragments that, in fact, did not need to be sorted.
+To check, there is sorting another array. There are more repeating fragments in this array, which, in fact, do not need to be sorted.
 
 ![Figure_3.png](Figure_3.png)
 
